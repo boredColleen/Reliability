@@ -1,5 +1,6 @@
 import numpy as np
 from scipy.optimize import minimize
+import matplotlib.pyplot as plt
 
 # Sample data
 times = np.array([800, 1000, 1200])  # Your data
@@ -30,15 +31,37 @@ result = minimize(neg_log_likelihood, initial_guess, method='L-BFGS-B', bounds=[
 # Extract the estimated shape and scale parameters
 shape_est, scale_est = result.x
 
-print(f"Estimated Shape: {shape_est}")
-print(f"Estimated Scale: {scale_est}")
+# Calculate the PDF and SF for a fine grid of time points for plotting
+time_grid = np.linspace(0, max(times) + 200, 1000)
+pdf_values = (shape_est / scale_est) * ((time_grid / scale_est) ** (shape_est - 1)) * np.exp(-(time_grid / scale_est) ** shape_est)
+sf_values = np.exp(-(time_grid / scale_est) ** shape_est)
 
-# Calculate and print the PDF and SF for each data point
-for t in times:
-    # Weibull PDF
-    pdf = (shape_est / scale_est) * ((t / scale_est) ** (shape_est - 1)) * np.exp(-(t / scale_est) ** shape_est)
-    
-    # Weibull SF
-    sf = np.exp(-(t / scale_est) ** shape_est)
-    
-    print(f"Time: {t}, PDF: {pdf}, SF: {sf}")
+# Get PDF and SF values for actual data points for plotting
+pdf_data_points = (shape_est / scale_est) * ((times / scale_est) ** (shape_est - 1)) * np.exp(-(times / scale_est) ** shape_est)
+sf_data_points = np.exp(-(times / scale_est) ** shape_est)
+
+# Plotting
+plt.figure(figsize=(10, 4))
+
+# Plot PDF
+plt.subplot(1, 2, 1)
+plt.plot(time_grid, pdf_values, color='blue', label='Weibull PDF')
+plt.scatter(times[events == 1], pdf_data_points[events == 1], color='red', label='Uncensored Data')  # Uncensored data points on PDF curve
+plt.scatter(times[events == 0], pdf_data_points[events == 0], color='green', label='Censored Data')  # Censored data points on PDF curve
+plt.xlabel('Time')
+plt.ylabel('PDF')
+plt.title('Weibull PDF')
+plt.legend()
+
+# Plot SF
+plt.subplot(1, 2, 2)
+plt.plot(time_grid, sf_values, color='green', label='Weibull SF')
+plt.scatter(times[events == 1], sf_data_points[events == 1], color='red', label='Uncensored Data')  # Uncensored data points on SF curve
+plt.scatter(times[events == 0], sf_data_points[events == 0], color='green', label='Censored Data')  # Censored data points on SF curve
+plt.xlabel('Time')
+plt.ylabel('SF')
+plt.title('Weibull SF')
+plt.legend()
+
+plt.tight_layout()
+plt.show()
