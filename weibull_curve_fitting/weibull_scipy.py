@@ -32,3 +32,13 @@ shape_est, scale_est = result.x
 
 print(f"Estimated Shape: {shape_est}")
 print(f"Estimated Scale: {scale_est}")
+
+# Calculate and print the PDF and SF for each data point
+for t in times:
+    # Weibull PDF
+    pdf = (shape_est / scale_est) * ((t / scale_est) ** (shape_est - 1)) * np.exp(-(t / scale_est) ** shape_est)
+    
+    # Weibull SF
+    sf = np.exp(-(t / scale_est) ** shape_est)
+    
+    print(f"Time: {t}, PDF: {pdf}, SF: {sf}")
