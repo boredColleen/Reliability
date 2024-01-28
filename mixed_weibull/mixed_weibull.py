@@ -23,7 +23,7 @@ def neg_log_likelihood_theta(theta, time_grid, sf_values_full, sf_values_observe
     return -np.sum(np.log(pdf_values_at_observed))
 
 # Sample data
-times = np.array([800, 1000, 1300, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1400, 1400])
+times = np.array([80, 100, 430, 504, 504, 504, 504, 504, 504, 504, 504, 504, 504, 504, 504, 504, 504, 504, 504, 504, 504, 504, 504])
 events = np.array([1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 initial_guess = [1.0, 1000.0]
 
@@ -42,7 +42,7 @@ sf_values_full = np.exp(-(time_grid / scale_est_full) ** shape_est_full)
 # Minimize negative log-likelihood for theta
 initial_guess_theta = [0.5]
 result_theta = minimize(neg_log_likelihood_theta, initial_guess_theta, args=(time_grid, sf_values_full, sf_values_observed, times, events), bounds=[(0, 1)])
-theta_est = 1#result_theta.x[0]
+theta_est = result_theta.x[0]
 print(f"Estimated Theta: {theta_est}")
 
 # Plot survival function
@@ -53,7 +53,7 @@ plt.xlabel('Time')
 plt.ylabel('SF')
 plt.title('Weibull SF')
 plt.legend()
-plt.xlim(-50, 1450)
-plt.ylim(-0.05, 1.05)
+
+
 plt.tight_layout()
 plt.show()
