@@ -43,7 +43,8 @@ plt.title('Failure and Survival Probability over Time')
 plt.xticks(time_points)  # Set x-ticks to match time_points
 
 # Set x-axis limits to fit the bars with gaps, adding some space on both sides
-plt.xlim(time_points[0] - 1.5 * bar_width, time_points[-2] + 1.5 * bar_width)
+#plt.xlim(time_points[0] - 1.5 * bar_width, time_points[-2] + 1.5 * bar_width)
+plt.xlim(-bar_width, max(time_points) + bar_width/2)  # Set x-axis limits to fit the bars with gaps
 
 # Add a legend
 plt.legend()
