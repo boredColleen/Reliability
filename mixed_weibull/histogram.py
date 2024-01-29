@@ -9,7 +9,7 @@ events = np.array([1, 1, 0] + [0] * 20)
 failure_times = times[events == 1]
 
 # Define time points (in hours) starting from 0, as multiples of 24 up to 504 hours
-time_points = np.arange(0, 504 + 24, 24)
+time_points = np.arange(0, 504 + 24 + 1, 24)
 
 # Calculate failures at each time point using np.histogram
 failures_at_time_points, _ = np.histogram(failure_times, bins=time_points)
@@ -27,7 +27,7 @@ failure_probability = cumulative_failures / total_samples
 bar_width = (time_points[1] - time_points[0]) * 0.8
 
 # Create the plot
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(7, 3))
 
 # Calculate and plot the surviving samples as an outline extending up to 1
 surviving_probability = 1 - failure_probability
@@ -44,7 +44,7 @@ plt.xticks(time_points)  # Set x-ticks to match time_points
 
 # Set x-axis limits to fit the bars with gaps, adding some space on both sides
 #plt.xlim(time_points[0] - 1.5 * bar_width, time_points[-2] + 1.5 * bar_width)
-plt.xlim(-bar_width, max(time_points) + bar_width/2)  # Set x-axis limits to fit the bars with gaps
+plt.xlim(-bar_width * 1.5, max(time_points) - bar_width/2)  # Set x-axis limits to fit the bars with gaps
 
 # Add a legend
 plt.legend()
