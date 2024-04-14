@@ -3,6 +3,7 @@ from scipy.optimize import minimize
 from scipy.interpolate import interp1d
 from lifelines import KaplanMeierFitter  # Import the Kaplan-Meier fitter
 import matplotlib.pyplot as plt
+import pandas as pd
 
 # Define the negative log-likelihood for the Weibull distribution
 def neg_log_likelihood(params, times, events, include_censored):
@@ -60,11 +61,23 @@ def plot_survival_functions(time_grid, sf_mixed, kmf_survival, times, events):
     
     plt.tight_layout()
     plt.show()
-        
-# Sample data
-times = np.array([80, 100, 230] + [500] * 20)
-events = np.array([1, 1, 1] + [0] * 20)
-initial_guess = [1.0, 1000.0]
+
+# Define the event indicators (1 for failure, 0 for censored)
+#times = np.array([24*5, 24*5.5])
+#times = np.array([1, 2, 3, 4])
+
+# Define the event indicators (1 for failure, 0 for censored)
+#events = np.array([1, 0])
+#events = np.array([0, 0, 0, 1])
+
+data = pd.read_csv('mixed_weibull/corrosion.csv', skipinitialspace=True)
+
+times = data['times'].values
+events = data['events'].values
+
+
+# Initial guess for the Weibull parameters (shape, scale)
+initial_guess = [10.0, 10.0]
 
 # Minimize negative log-likelihood for observed and full data
 result_observed = minimize(neg_log_likelihood, initial_guess, args=(times, events, False), bounds=[(0.001, None), (0.001, None)])
@@ -74,7 +87,7 @@ shape_full, scale_full = result_full.x
 
 # Calculate failure rate and survival functions
 fr = np.mean(events)
-time_grid = np.linspace(0, max(times) + 200, 1000)
+time_grid = np.linspace(0, max(times)*1.2, 1000)
 sf_observed = fr * np.exp(-(time_grid / scale_observed) ** shape_observed) + (1 - fr)
 sf_full = np.exp(-(time_grid / scale_full) ** shape_full)
 
