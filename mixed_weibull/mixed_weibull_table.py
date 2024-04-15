@@ -63,23 +63,20 @@ def plot_survival_functions(time_grid, sf_mixed, kmf_survival, times, events):
     plt.show()
 
 data = pd.read_csv('mixed_weibull/corrosion_multi_plot_data.csv', skipinitialspace=True)
-# Filter out events that are marked as '0' (ignore)
-data = data[data['a'] != 0]
 
-# Expand the times and events based on the absolute count of events
-expanded_times = []
-expanded_events = []
+col = 'd'
 
-for time, event in zip(data['times'], data['a']):
-    count = abs(event)
-    expanded_times.extend([time] * count)
-    expanded_events.extend([np.sign(event)] * count)  # Use 1 for failure and -1 for censored
+# Filter out events marked as '0' directly during load or preprocessing
+data = data[data[col] != 0]
 
-times = np.array(expanded_times)
-events = np.array(expanded_events)
+# Use numpy to repeat times based on the absolute value of events
+times = np.repeat(data['times'], np.abs(data[col]))
+
+# Determine signs for events (1 for positive, -1 for negative) and repeat accordingly
+events = np.sign(data[col]).repeat(np.abs(data[col]))
 
 # Initial guess for the Weibull parameters (shape, scale)
-initial_guess = [10.0, 10.0]
+initial_guess = [1.0, 10.0]
 
 # Minimize negative log-likelihood for observed and full data
 result_observed = minimize(neg_log_likelihood, initial_guess, args=(times, events, False), bounds=[(0.001, None), (0.001, None)])
@@ -102,7 +99,10 @@ sf_full = np.exp(-(time_grid / scale_full) ** shape_full)
 initial_guess_theta = [0.5]
 result_theta = minimize(neg_log_likelihood_theta, initial_guess_theta, args=(time_grid, sf_full, sf_observed, times, events), bounds=[(0, 1)])
 theta = result_theta.x[0]
-print(f"fr:{failure_rate}, a_o:{scale_observed}, b_o:{shape_observed}, a_f:{scale_full}, b_f:{shape_full}, theta:{theta}")
+print(f"failure_rate:{failure_rate}")
+print(f"scale_obs:{scale_observed},shape_obs:{shape_observed}")
+print(f"scale_full:{scale_full}, shape_full:{shape_full}")
+print(f"theta:{theta}")
 print(f"sf_observed = fr * exp(-(t/a_o^b_o) + (1-fr)")
 print(f"sf_full = exp(-(t/a_f^b_f))")
 print(f"sf_mixed = theta * sf_observed + (1- theta) sf_full")
