@@ -64,6 +64,7 @@ def plot_survival_functions(time_grid, sf_mixed, kmf_survival, times, events):
 
 data = pd.read_csv('mixed_weibull/corrosion_multi_plot_data.csv', skipinitialspace=True)
 
+# Event column
 col = 'd'
 
 # Filter out events marked as '0' directly during load or preprocessing
