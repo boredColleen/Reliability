@@ -1,6 +1,12 @@
-x_group1,y_group1,label_group1,size_group1,x_group2,y_group2,label_group2,size_group2
-50,5.2,a,240,10,3,f,40
-60,7,b,120,5,0.8,g,80
-30,2.8,c,40,90,12,h,120
-70,8.5,d,180,15,2,i,60
-20,1.5,e,60,40,6,j,100
+group,x,y,label,size
+Group 1,50,5.2,a,240
+Group 1,60,7,b,120
+Group 1,30,2.8,c,40
+Group 1,70,8.5,d,180
+Group 1,20,1.5,e,60
+Group 2,10,3,f,40
+Group 2,5,0.8,g,80
+Group 2,90,12,h,120
+Group 2,15,2,i,60
+Group 2,40,6,j,100
+
