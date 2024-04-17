@@ -1,12 +1,13 @@
-group,x,y,label,size
-Group 1,50,5.2,a,240
-Group 1,60,7,b,120
-Group 1,30,2.8,c,40
-Group 1,70,8.5,d,180
-Group 1,20,1.5,e,60
-Group 2,10,3,f,40
-Group 2,5,0.8,g,80
-Group 2,90,12,h,120
-Group 2,15,2,i,60
-Group 2,40,6,j,100
+group,label,x,y,size
+G_a,x,0,0,200
+G_a,a,50,5.2,240
+G_a,b,60,7,120
+Group 1,c,30,2.8,40
+Group 1,d,70,8.5,180
+Group 1,a,20,1.5,60
+Group 2,b,10,3,40
+Group 2,c,5,0.8,80
+Group 2,e,90,12,120
+Group 2,a,35,2,60
+Group 2,a,40,6,100
 
