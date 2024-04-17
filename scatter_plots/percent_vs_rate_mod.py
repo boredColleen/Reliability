@@ -50,7 +50,7 @@ def validate_and_load_csv(file_path):
         print(f"An error occurred: {e}")
         return None
 
-def plot_group_data(df, group_name, alpha=0.75, marker='o', x_offset=1.0, y_offset=0.5):
+def plot_group_data(df, group_name, alpha=0.5, marker='o', x_offset=1.0, y_offset=0.5):
     """
     Plot data for a specified group with distinct colors.
     
