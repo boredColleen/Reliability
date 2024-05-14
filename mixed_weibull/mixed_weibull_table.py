@@ -62,10 +62,12 @@ def plot_survival_functions(time_grid, sf_mixed, kmf_survival, times, events):
     plt.tight_layout()
     plt.show()
 
-data = pd.read_csv('mixed_weibull/corrosion_multi_plot_data.csv', skipinitialspace=True)
+#data = pd.read_csv('mixed_weibull/corrosion_multi_plot_data.csv', skipinitialspace=True)
+data = pd.read_csv('failure_simulator/times_and_events.csv', skipinitialspace=True)
 
 # Event column
-col = 'd'
+#col = 'd'
+col = 'events'
 
 # Filter out events marked as '0' directly during load or preprocessing
 data = data[data[col] != 0]
