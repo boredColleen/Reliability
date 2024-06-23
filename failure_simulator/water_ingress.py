@@ -1,12 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.stats import norm, cauchy
+from scipy.stats import norm, cauchy, weibull_min
 
+a0 = 4.0
+h0 = 100
+c0 = 250
 # Set parameters for Gaussian distributions
-area_mean = 4.0       # mean area in mm^2
-area_std = 0.1        # standard deviation of area in mm^2
-height_mean = 100.0   # mean height in um
-height_std = 20.0     # standard deviation of height in um
+area_mean = a0      # mean area in mm^2
+area_std = a0 * .25      # standard deviation of area in mm^2
+height_mean = h0   # mean height in um
+height_std = h0 * .2   # standard deviation of height in um
 
 # Generate initial samples
 num_samples = 100000
@@ -25,15 +28,18 @@ while not np.all(valid_areas):
     valid_areas = (areas > 0) & (areas < 10)
 
 # Compute the water ingress (proportional to area and inversely proportional to height)
-water_ingress = areas / heights
-
+filtered_water_ingress = c0 * areas / heights
 # Filter out extremely high water ingress values to improve visualization
-max_water_ingress = 0.1  # Set a reasonable cap
-filtered_water_ingress = water_ingress[water_ingress < max_water_ingress]
-
+#max_water_ingress = c * 10  # Set a reasonable cap
+#filtered_water_ingress = water_ingress[water_ingress < max_water_ingress]
 # Plot the histogram
 plt.figure(figsize=(10, 6))
 hist_data = plt.hist(filtered_water_ingress, bins=100, color='blue', alpha=0.7, density=True, label='Histogram')
+
+# FIt a Weibull distribution to the data
+shape_weibull, loc_weibull, scale_weibull = weibull_min.fit(filtered_water_ingress)
+x_weibull = np.linspace(min(filtered_water_ingress), max(filtered_water_ingress), 1000)
+plt.plot(x_weibull, weibull_min.pdf(x_weibull, shape_weibull, loc_weibull, scale_weibull), 'b-', lw=2, label=f'Weibull Fit: shape={shape_weibull:.2f}, loc={loc_weibull:.2f}, scale={scale_weibull:.2f}')
 
 # Fit a Cauchy distribution to the filtered data and plot it
 loc, scale = cauchy.fit(filtered_water_ingress)
