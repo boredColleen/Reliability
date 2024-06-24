@@ -20,7 +20,7 @@ observed_data = np.random.weibull(shape_weibull, 3000) * scale_weibull  # Simula
 # Setup PyMC model
 with pm.Model() as model:
     # Priors for unknown model parameter - increase in WVTR due to pinholes
-    pinhole_effect = pm.Normal('pinhole_effect', mu=5, sigma=10)
+    pinhole_effect = pm.Normal('pinhole_effect', mu=7, sigma=10)
 
     # Calculating the theoretical mean WVTR based on pinhole effect
     base_wvtr = 10
