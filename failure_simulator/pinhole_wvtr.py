@@ -7,12 +7,12 @@ base_wvtr = 170  # Base WVTR without pinholes
 
 # Distribution parameters for direct WVTR effect of pinholes
 mean_pinhole_effect = 20  # Mean increase in WVTR due to pinholes
-a = 70
+a = 76
 std_dev_pinhole_effect = a  # Standard deviation of the increase
 
 # Distribution parameters for electrolyte concentration effects on WVTR
 mean_electrolyte_effect = 1.0
-std_dev_electrolyte_effect = 1.0
+std_dev_electrolyte_effect = 2.0
 
 # Generate pinhole effects on WVTR
 pinhole_effects = np.random.normal(mean_pinhole_effect, std_dev_pinhole_effect, size=10000)
@@ -31,7 +31,7 @@ valid_wvtr = final_wvtr[valid_indices]
 valid_electrolyte_effects = initial_electrolyte_effects[valid_indices]
 
 # Now use valid_electrolyte_effects in your corrosion time calculation
-b = 375
+b = 377
 corrosion_time = b * 24 * valid_electrolyte_effects / valid_wvtr
 
 # Filter out non-physical and excessive corrosion times
