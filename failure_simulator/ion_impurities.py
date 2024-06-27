@@ -36,7 +36,7 @@ temperatures_kelvin = temperatures_celsius + 273.15
 concentrations = [0, 0.01, 0.02, 0.03, 0.04]
 
 # Plotting the results
-plt.figure(figsize=(12, 8))
+plt.figure(figsize=(6, 4))
 
 for c in concentrations:
     rates = r(temperatures_kelvin, c) * scaling_factor
@@ -68,7 +68,7 @@ rates_70C = r(T_70C, concentration_samples) * scaling_factor
 params = weibull_min.fit(rates_70C, floc=0)
 
 # Plotting the reaction rate distribution with Weibull fit
-plt.figure(figsize=(12, 8))
+plt.figure(figsize=(6, 4))
 plt.hist(rates_70C, bins=30, density=True, alpha=0.6, color='g', label='Rate Distribution at 70°C')
 
 # Define the Weibull probability density function using the fitted parameters
