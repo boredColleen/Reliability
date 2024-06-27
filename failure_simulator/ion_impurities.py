@@ -58,7 +58,7 @@ plt.show()
 
 # Generate normal distribution for molar concentrations centered at 0.01 M with std 0.005
 mean_concentration = 0.01
-std_concentration = 0.005
+std_concentration = 0.01
 concentration_samples = np.random.normal(mean_concentration, std_concentration, 1000)
 
 # Calculate reaction rates at 70°C for the concentration samples
@@ -71,7 +71,7 @@ params = weibull_min.fit(rates_70C, floc=0)
 plt.figure(figsize=(6, 4))
 plt.hist(rates_70C, bins=30, density=True, alpha=0.6, color='g', label='Rate Distribution at 70°C')
 
-# Define the Weibull probability density function using the fitted parameters
+""" # Define the Weibull probability density function using the fitted parameters
 x = np.linspace(min(rates_70C), max(rates_70C), 100)
 pdf_weibull = weibull_min.pdf(x, *params)
 
@@ -81,7 +81,23 @@ plt.ylabel('Probability Density')
 plt.title('Reaction Rate Distribution at 70°C with Weibull Fit')
 plt.legend()
 plt.grid(True)
+plt.show() """
+
+# Fit Gaussian distribution to the rate data
+mu, sigma = norm.fit(rates_70C)
+
+# Define the Gaussian probability density function using the fitted parameters
+x = np.linspace(min(rates_70C), max(rates_70C), 100)
+pdf_gaussian = norm.pdf(x, mu, sigma)
+
+plt.plot(x, pdf_gaussian, 'r-', lw=2, label=f'Gaussian Fit: μ={mu:.2f}, σ={sigma:.2f}')
+plt.xlabel('Reaction Rate (relative to 1.0 at 0.01 M)')
+plt.ylabel('Probability Density')
+plt.title('Reaction Rate Distribution at 70°C with Gaussian Fit')
+plt.legend()
+plt.grid(True)
 plt.show()
+
 
 # Print reaction rates at 25°C, 70°C, and 85°C for different concentrations
 print("Reaction rates at 25°C, 70°C, and 85°C for different impurity concentrations:")
