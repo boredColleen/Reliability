@@ -4,9 +4,9 @@ from scipy.optimize import differential_evolution
 
 def simulate_corrosion(std_dev_pinhole_effect, time_factor):
     base_wvtr = 170
-    mean_pinhole_effect = 20
-    mean_electrolyte_effect = 1.0
-    std_dev_electrolyte_effect = 1  # Set as a constant
+    mean_pinhole_effect = 30
+    mean_electrolyte_effect = 0.98
+    std_dev_electrolyte_effect = 0.24  # Set as a constant
 
     pinhole_effects = np.random.normal(mean_pinhole_effect, std_dev_pinhole_effect, size=10000)
     electrolyte_effects = np.random.normal(mean_electrolyte_effect, std_dev_electrolyte_effect, size=10000)
@@ -34,8 +34,8 @@ def callback_fn(xk, convergence):
     print(f"Std Dev Pinhole: {xk[0]:.2f}, Time Factor: {xk[1]:.2f}, Shape: {shape:.2f}, Scale: {scale:.2f}, Convergence: {convergence:.6f}")
 
 def optimize_std_devs():
-    bounds = [(0, 100), (100, 500)]
-    result = differential_evolution(objective, bounds, seed=42, updating='deferred', callback=callback_fn, maxiter=20, tol=0.01)
+    bounds = [(0, 200), (100, 600)]
+    result = differential_evolution(objective, bounds, seed=42, updating='deferred', callback=callback_fn, maxiter=100, tol=0.01)
     if result.success:
         return result.x
     else:
