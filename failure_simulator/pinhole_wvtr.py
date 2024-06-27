@@ -44,13 +44,13 @@ shape_wvtr, loc_wvtr, scale_wvtr = stats.weibull_min.fit(valid_wvtr, floc=0)
 shape_ct, loc_ct, scale_ct = stats.weibull_min.fit(valid_corrosion_time, floc=0)
 
 # Plotting both distributions and their Weibull fits
-fig, axs = plt.subplots(1, 2, figsize=(14, 6))
+fig, axs = plt.subplots(1, 2, figsize=(10, 4))
 
 # Plotting WVTR distribution and Weibull fit
-axs[0].hist(valid_wvtr, bins=50, alpha=0.6, color='green', density=True, label='WVTR Data')
+axs[0].hist(valid_wvtr, bins=50, alpha=0.6, color='green', density=True)
 x_wvtr = np.linspace(valid_wvtr.min(), valid_wvtr.max(), 100)
-axs[0].plot(x_wvtr, stats.weibull_min.pdf(x_wvtr, shape_wvtr, loc_wvtr, scale_wvtr), 'r-', label=f'Weibull Fit: shape={shape_wvtr:.2f}, scale={scale_wvtr:.2f}')
-axs[0].set_title('Distribution of Valid WVTR with Weibull Fit')
+axs[0].plot(x_wvtr, stats.weibull_min.pdf(x_wvtr, shape_wvtr, loc_wvtr, scale_wvtr), 'r-')
+#axs[0].set_title('Distribution of Valid WVTR with Weibull Fit')
 axs[0].set_xlabel('WVTR')
 axs[0].set_ylabel('Density')
 axs[0].legend()
@@ -58,9 +58,9 @@ axs[0].legend()
 # Plotting Corrosion Time distribution and Weibull fit
 axs[1].hist(valid_corrosion_time, bins=50, alpha=0.6, color='blue', density=True, label='Corrosion Time Data')
 x_ct = np.linspace(valid_corrosion_time.min(), valid_corrosion_time.max(), 100)
-axs[1].plot(x_ct, stats.weibull_min.pdf(x_ct, shape_ct, loc_ct, scale_ct), 'r-', label=f'Weibull Fit: shape={shape_ct:.2f}, scale={scale_ct:.2f}')
-axs[1].set_title('Distribution of Corrosion Time (Valid Range) with Weibull Fit')
-axs[1].set_xlabel('Corrosion Time (hours)')
+axs[1].plot(x_ct, stats.weibull_min.pdf(x_ct, shape_ct, loc_ct, scale_ct), 'r-', label=f'shape={shape_ct:.2f}, scale={scale_ct:.2f}')
+#axs[1].set_title('Distribution of Corrosion Time (Valid Range) with Weibull Fit')
+axs[1].set_xlabel('Corrosion Time (h)')
 axs[1].legend()
 
 plt.show()
