@@ -17,7 +17,8 @@ def k(T):
 
 # Function to calculate the effect of impurities
 def f(c, T):
-    w = np.exp(-1 / (T_85C - T_25C) * (T - T_25C) + 2)
+    # w = e^4 at T_25, e^1 at T_85
+    w = np.exp(- 3.3 / (T_85C - T_25C) * (T - T_25C) + 4)
     return 10 * np.log(1 + w * c)
 
 # Function to calculate the overall reaction rate
@@ -106,3 +107,45 @@ for c in concentrations:
     rate_70C = r(T_70C, c) * scaling_factor
     rate_85C = r(T_85C, c) * scaling_factor
     print(f"Concentration: {c:.4f} M - Rate at 25°C: {rate_25C:.2e} times, Rate at 70°C: {rate_70C:.2e} times, Rate at 85°C: {rate_85C:.2e} times")
+
+# Print reaction rates at 25°C, 70°C, and 85°C for different concentrations in table format
+import pandas as pd
+
+# Define concentrations and temperatures
+concentrations = [0.005, 0.075, 0.01, 0.0125, 0.015]
+temperatures = [25, 70, 85]
+temperature_kelvin = [T_25C, T_70C, T_85C]
+
+# Initialize the table data
+table_data = []
+
+# Calculate reaction rates and populate table data
+for c in concentrations:
+    row = [c]
+    for T in temperature_kelvin:
+        rate = r(T, c) * scaling_factor
+        row.append(rate)
+    table_data.append(row)
+
+# Create a DataFrame for better visualization
+columns = ['Concentration (M)', 'Rate at 25°C', 'Rate at 70°C', 'Rate at 85°C']
+df = pd.DataFrame(table_data, columns=columns)
+
+# Print the DataFrame
+print(df)
+
+# Add row for average reaction rates at each temperature
+average_row = ['Average']
+for T in temperature_kelvin:
+    average_rate = np.mean([r(T, c) * scaling_factor for c in concentrations])
+    average_row.append(average_rate)
+
+# Add the average row to the table data
+table_data.append(average_row)
+
+# Create a DataFrame for better visualization
+columns = ['Concentration (M)', 'Rate at 25°C', 'Rate at 70°C', 'Rate at 85°C']
+df = pd.DataFrame(table_data, columns=columns)
+
+# Print the DataFrame
+print(df)
